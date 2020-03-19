@@ -163,6 +163,7 @@ int main(int argc, char **argv)
         cv::Mat image = cv::imread(strImgPath.str(), CV_LOAD_IMAGE_COLOR);
         // cv::imshow("writeView", image);
         // cv::waitKey(1);
+        std_msgs::Header().stamp = timeStamp;
         sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
         pub.publish(msg);
         
