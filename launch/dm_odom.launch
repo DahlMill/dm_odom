@@ -1,0 +1,9 @@
+<launch>
+    <node name="dmOdom" pkg = "dm_odom" type = "dmOdom">
+    </node>
+    <node name="dmOdomAdv" pkg = "dm_odom" type = "dmOdomAdv">
+    </node>
+    <node name="TestMono" pkg = "ORB_SLAM2" type = "TestMono" args="2" output="screen">
+    </node>
+
+</launch>
