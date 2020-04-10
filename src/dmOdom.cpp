@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#define LOG_PATH "/home/dm/CodeBase/SLAM_DATA/img/"
+#define LOG_PATH "/home/lyh/slam_datasets/orb_odom/"
 
 //字符串分割函数
 std::vector<std::string> split(std::string str, std::string pattern)
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     image_transport::Publisher pub = it.advertise("camera/image", 1);
 
     ifstream inFile;
-    inFile.open("/home/dm/CodeBase/SLAM_DATA/img/imglog.txt", ios::in);
+    inFile.open("/home/lyh/slam_datasets/orb_odom/imglog.txt", ios::in);
 
     int imgCount = 0;
 
@@ -163,8 +163,9 @@ int main(int argc, char **argv)
         cv::Mat image = cv::imread(strImgPath.str(), CV_LOAD_IMAGE_COLOR);
         // cv::imshow("writeView", image);
         // cv::waitKey(1);
-        std_msgs::Header().stamp = timeStamp;
+//        std_msgs::Header().stamp = timeStamp;
         sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
+        msg->header.stamp = timeStamp;
         pub.publish(msg);
         
         r.sleep();
