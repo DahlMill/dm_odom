@@ -1,8 +1,8 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-03-11 19:13:35
- * @LastEditors: DahlMill
+ * @LastEditTime: 2020-04-10 15:11:53
+ * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
  */
@@ -71,7 +71,8 @@ int main(int argc, char **argv)
     // current_time = ros::Time::now();
     // last_time = ros::Time::now();
 
-    ros::Time timeStamp;
+    ros::Time chassisTimeStamp;
+    ros::Time slamTimeStamp;
 
     ros::Rate r(100);
     // cv::namedWindow("writeView");
@@ -91,16 +92,18 @@ int main(int argc, char **argv)
         }
 
         std::vector<std::string> vStr = split(strLine, " ");
+        slamTimeStamp.sec = atoi(vStr[0].c_str());
+        slamTimeStamp.nsec = atoi(vStr[1].c_str()) * 1000;
+        imgCount = atoi(vStr[2].c_str());
 
-        imgCount = atoi(vStr[0].c_str());
-        timeStamp.sec = atoi(vStr[1].c_str());
-        timeStamp.nsec = atoi(vStr[2].c_str()) * 1000;
-        x = atoi(vStr[3].c_str());
-        y = atoi(vStr[4].c_str());
-        th = atoi(vStr[5].c_str()) / 10.0;
+        chassisTimeStamp.sec = atoi(vStr[3].c_str());
+        chassisTimeStamp.nsec = atoi(vStr[4].c_str()) * 1000;
+        x = atoi(vStr[5].c_str());
+        y = atoi(vStr[6].c_str());
+        th = atoi(vStr[7].c_str()) / 10.0;
 
         // 打印转换结果
-        cout << imgCount << " " << timeStamp.sec << " " << timeStamp.nsec << " " << x << " " << y << " " << th << endl;
+        cout << slamTimeStamp.sec << " " << slamTimeStamp.nsec << " " << imgCount << " " << chassisTimeStamp.sec << " " << chassisTimeStamp.nsec << " " << x << " " << y << " " << th << endl;
 
         ros::spinOnce(); // check for incoming messages
         // current_time = ros::Time::now();
@@ -135,7 +138,7 @@ int main(int argc, char **argv)
         nav_msgs::Odometry odom;
         // odom.header.stamp = current_time;
 
-        odom.header.stamp = timeStamp;
+        odom.header.stamp = chassisTimeStamp;
 
         odom.header.frame_id = "odom";
 
@@ -163,7 +166,7 @@ int main(int argc, char **argv)
         cv::Mat image = cv::imread(strImgPath.str(), CV_LOAD_IMAGE_COLOR);
         // cv::imshow("writeView", image);
         // cv::waitKey(1);
-        std_msgs::Header().stamp = timeStamp;
+        std_msgs::Header().stamp = slamTimeStamp;
         sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
         pub.publish(msg);
         

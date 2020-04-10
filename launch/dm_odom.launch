@@ -1,9 +1,11 @@
 <launch>
-    <node name="dmOdom" pkg = "dm_odom" type = "dmOdom">
+    <node name="dmOdom" pkg = "dm_odom" type = "dmOdom" output="screen">
     </node>
-    <node name="dmOdomAdv" pkg = "dm_odom" type = "dmOdomAdv">
+    <!-- <node name="dmOdomAdv" pkg = "dm_odom" type = "dmOdomAdv">
+    </node> -->
+    <node name="test_mono" pkg = "ORB_SLAM2" type = "test_mono" args="2" output="screen">
     </node>
-    <node name="TestMono" pkg = "ORB_SLAM2" type = "TestMono" args="2" output="screen">
+    <node name="rviz" pkg = "rviz" type = "rviz">
     </node>
 
 </launch>
