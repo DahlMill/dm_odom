@@ -1,7 +1,7 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-04-10 15:11:53
+ * @LastEditTime: 2020-04-11 17:28:41
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
@@ -77,6 +77,8 @@ int main(int argc, char **argv)
     ros::Rate r(100);
     // cv::namedWindow("writeView");
     // cv::startWindowThread();
+
+    int iCountBuf = 0;
 
     while (!inFile.eof() && n.ok())
     {
@@ -160,6 +162,9 @@ int main(int argc, char **argv)
         odom_pub.publish(odom);
         // last_time = current_time;
 
+        if(iCountBuf == imgCount)
+            continue;
+
         ostringstream strImgPath;
         strImgPath << LOG_PATH << "img" << imgCount << ".jpg";
         // CV_LOAD_IMAGE_COLOR
@@ -169,7 +174,7 @@ int main(int argc, char **argv)
         sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", image).toImageMsg();
         msg->header.stamp = slamTimeStamp;
         pub.publish(msg);
-        
+        iCountBuf = imgCount;
         r.sleep();
     }
 
