@@ -20,7 +20,7 @@
 
 using namespace std;
 
-#define LOG_PATH "/home/lyh/slam_datasets/orb_odom/"
+#define LOG_PATH "/home/lyh/slam_datasets/4-10_orb_odom/"
 
 //字符串分割函数
 std::vector<std::string> split(std::string str, std::string pattern)
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     image_transport::Publisher pub = it.advertise("camera/image", 1);
 
     ifstream inFile;
-    inFile.open("/home/lyh/slam_datasets/orb_odom/imglog.txt", ios::in);
+    inFile.open("/home/lyh/slam_datasets/4-10_orb_odom/img/imglog.txt", ios::in);
 
     int imgCount = 0;
 
