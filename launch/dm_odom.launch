@@ -3,7 +3,7 @@
     </node>
     <!-- <node name="dmOdomAdv" pkg = "dm_odom" type = "dmOdomAdv">
     </node> -->
-    <node name="test_mono" pkg = "ORB_SLAM2" type = "test_mono" args="2" output="screen">
+    <node name="test_mono" pkg = "ORB_SLAM2" type = "test_mono" args="2">
     </node>
     <node name="rviz" pkg = "rviz" type = "rviz">
     </node>

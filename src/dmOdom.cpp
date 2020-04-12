@@ -1,11 +1,21 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-04-11 17:28:41
+ * @LastEditTime: 2020-04-11 19:13:56
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
  */
+
+// R
+//           -1 -1.22465e-16            0
+//  1.22465e-16           -1            0
+//            0            0            1
+
+// T
+//     1   0   0
+//     0   1   0
+//     0   0   1
 
 #include <image_transport/image_transport.h>
 #include <tf/transform_broadcaster.h>
@@ -20,7 +30,8 @@
 
 using namespace std;
 
-#define LOG_PATH "/home/lyh/slam_datasets/4-10_orb_odom/"
+#define IMG_PATH "/home/dm/CodeBase/SLAM_DATA/img/"
+#define TXT_PATH "/home/dm/CodeBase/SLAM_DATA/img/imglog.txt"
 
 //字符串分割函数
 std::vector<std::string> split(std::string str, std::string pattern)
@@ -55,7 +66,7 @@ int main(int argc, char **argv)
     image_transport::Publisher pub = it.advertise("camera/image", 1);
 
     ifstream inFile;
-    inFile.open("/home/lyh/slam_datasets/4-10_orb_odom/img/imglog.txt", ios::in);
+    inFile.open(TXT_PATH, ios::in);
 
     int imgCount = 0;
 
@@ -80,6 +91,13 @@ int main(int argc, char **argv)
 
     int iCountBuf = 0;
 
+    // geometry_msgs::Quaternion quat =
+    //         tf::createQuaternionMsgFromYaw(180);
+
+    // cout << quat << endl;
+
+    // return 0;
+
     while (!inFile.eof() && n.ok())
     {
         string strLine;
@@ -103,6 +121,7 @@ int main(int argc, char **argv)
         x = atoi(vStr[5].c_str());
         y = atoi(vStr[6].c_str());
         th = atoi(vStr[7].c_str()) / 10.0;
+        th = M_PI * (th / 360);
 
         // 打印转换结果
         cout << slamTimeStamp.sec << " " << slamTimeStamp.nsec << " " << imgCount << " " << chassisTimeStamp.sec << " " << chassisTimeStamp.nsec << " " << x << " " << y << " " << th << endl;
@@ -166,7 +185,7 @@ int main(int argc, char **argv)
             continue;
 
         ostringstream strImgPath;
-        strImgPath << LOG_PATH << "img" << imgCount << ".jpg";
+        strImgPath << IMG_PATH << "img" << imgCount << ".jpg";
         // CV_LOAD_IMAGE_COLOR
         cv::Mat image = cv::imread(strImgPath.str(), CV_LOAD_IMAGE_COLOR);
         // cv::imshow("writeView", image);
