@@ -1,7 +1,7 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-04-11 19:13:56
+ * @LastEditTime: 2020-04-13 09:13:21
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
         x = atoi(vStr[5].c_str());
         y = atoi(vStr[6].c_str());
         th = atoi(vStr[7].c_str()) / 10.0;
-        th = M_PI * (th / 360);
+        th = (2.0 * M_PI) * (th / 360.0);
 
         // 打印转换结果
         cout << slamTimeStamp.sec << " " << slamTimeStamp.nsec << " " << imgCount << " " << chassisTimeStamp.sec << " " << chassisTimeStamp.nsec << " " << x << " " << y << " " << th << endl;
