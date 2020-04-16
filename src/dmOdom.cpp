@@ -1,7 +1,7 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-04-13 09:13:21
+ * @LastEditTime: 2020-04-16 19:42:25
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
@@ -54,6 +54,25 @@ std::vector<std::string> split(std::string str, std::string pattern)
     return result;
 }
 
+void QuaternionToeularangle(double &q0, double &q1, double &q2, double &q3)
+{
+    // cout << "------------------------" << endl;
+    // cout << q0 << " " << q1 << " " << q2 << " " << q3 << endl;
+    double roll_x, pitch_y, yaw_z;
+    // ,yaw_z_angle;
+    yaw_z=std::atan2(2*(q3*q2+q0*q1),1-2*(q1*q1+q2*q2)) * 57.29;
+    pitch_y=std::asin(2*(q3*q1-q0*q2)) * 57.29;
+    roll_x=std::atan2(2*(q3*q0+q1*q2),1-2*(q1*q1+q0*q0)) * 57.29;
+    // roll_x = (std::asin(q0 * q0 - q1 * q1 - q2 * q2 + q3 * q3)*57.29);
+    // cout << "[" << roll_x << "]" << endl;
+    // cout << "------------------------" << endl;
+    cout <<"[" <<roll_x <<"; " << pitch_y <<"; "<<yaw_z << "]" <<endl;
+
+    // cout<<"roll_x="<<roll_x<<endl;
+    // cout<<"pitch_y="<<pitch_y<<endl;
+    // cout<<"yaw_z="<<yaw_z<<endl;
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "dm_odometry_publisher");
@@ -91,12 +110,14 @@ int main(int argc, char **argv)
 
     int iCountBuf = 0;
 
-    // geometry_msgs::Quaternion quat =
-    //         tf::createQuaternionMsgFromYaw(180);
+    geometry_msgs::Quaternion quat =
+            tf::createQuaternionMsgFromYaw((2.0 * M_PI) * (190 / 360.0));
 
-    // cout << quat << endl;
+    cout << quat << endl;
 
-    // return 0;
+    QuaternionToeularangle(quat.x, quat.y, quat.z, quat.w);
+
+    return 0;
 
     while (!inFile.eof() && n.ok())
     {
@@ -113,11 +134,11 @@ int main(int argc, char **argv)
 
         std::vector<std::string> vStr = split(strLine, " ");
         slamTimeStamp.sec = atoi(vStr[0].c_str());
-        slamTimeStamp.nsec = atoi(vStr[1].c_str()) * 1000;
+        slamTimeStamp.nsec = atoi(vStr[1].c_str());
         imgCount = atoi(vStr[2].c_str());
 
         chassisTimeStamp.sec = atoi(vStr[3].c_str());
-        chassisTimeStamp.nsec = atoi(vStr[4].c_str()) * 1000;
+        chassisTimeStamp.nsec = atoi(vStr[4].c_str());
         x = atoi(vStr[5].c_str());
         y = atoi(vStr[6].c_str());
         th = atoi(vStr[7].c_str()) / 10.0;
