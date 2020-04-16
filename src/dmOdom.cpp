@@ -1,7 +1,7 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-04-16 19:42:25
+ * @LastEditTime: 2020-04-16 19:49:01
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
@@ -110,14 +110,14 @@ int main(int argc, char **argv)
 
     int iCountBuf = 0;
 
-    geometry_msgs::Quaternion quat =
-            tf::createQuaternionMsgFromYaw((2.0 * M_PI) * (190 / 360.0));
+    // geometry_msgs::Quaternion quat =
+    //         tf::createQuaternionMsgFromYaw((2.0 * M_PI) * (190 / 360.0));
 
-    cout << quat << endl;
+    // cout << quat << endl;
 
-    QuaternionToeularangle(quat.x, quat.y, quat.z, quat.w);
+    // QuaternionToeularangle(quat.x, quat.y, quat.z, quat.w);
 
-    return 0;
+    // return 0;
 
     while (!inFile.eof() && n.ok())
     {
