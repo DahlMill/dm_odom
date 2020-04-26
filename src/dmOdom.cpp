@@ -1,7 +1,7 @@
 /*
  * @Author: DahlMill
  * @Date: 2020-03-09 20:59:09
- * @LastEditTime: 2020-04-16 19:49:01
+ * @LastEditTime: 2020-04-26 09:20:28
  * @LastEditors: Please set LastEditors
  * @Description: 
  * @FilePath: /catkin_ws/src/dm_odom/src/dmOdom.cpp
@@ -139,8 +139,8 @@ int main(int argc, char **argv)
 
         chassisTimeStamp.sec = atoi(vStr[3].c_str());
         chassisTimeStamp.nsec = atoi(vStr[4].c_str());
-        x = atoi(vStr[5].c_str());
-        y = atoi(vStr[6].c_str());
+        x = atoi(vStr[5].c_str()) / 1000.0;
+        y = atoi(vStr[6].c_str()) / 1000.0;
         th = atoi(vStr[7].c_str()) / 10.0;
         th = (2.0 * M_PI) * (th / 360.0);
 
